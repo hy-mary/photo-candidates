@@ -1,3 +1,5 @@
+---
+---
 <!doctype html>
 <html lang="ko">
   <head>
@@ -7,6 +9,17 @@
     <meta name="description" content="제작물별 사진 적용 예시를 확인하는 갤러리" />
     <title>사진 적용 예시</title>
     <link rel="stylesheet" href="./styles.css" />
+    <script>
+      window.PHOTO_FILES = [
+        {% assign image_extensions = ".jpg,.jpeg,.png,.webp,.gif,.avif" | split: "," %}
+        {% for file in site.static_files %}
+          {% assign extension = file.extname | downcase %}
+          {% if image_extensions contains extension %}
+            {{ file.path | relative_url | jsonify }},
+          {% endif %}
+        {% endfor %}
+      ];
+    </script>
     <script src="./app.js" defer></script>
   </head>
   <body>
