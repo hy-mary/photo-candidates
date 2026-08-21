@@ -98,3 +98,46 @@ function loadPhotos(category) {
   setLoading();
   const folderSegment = `/${category.folder}/`;
   state.photos = PHOTO_FILES
+    .filter((path) => typeof path === "string" && path.includes(folderSegment) && IMAGE_EXTENSIONS.test(path))
+    .map((path) => ({
+      name: decodeURIComponent(path.split("/").pop()),
+      url: path,
+    }))
+    .sort(naturalSort);
+  renderGallery();
+}
+
+function renderGallery() {
+  elements.gallery.replaceChildren();
+  elements.photoCount.textContent = `${state.photos.length}장`;
+  elements.galleryStatus.className = "gallery-status is-hidden";
+
+  if (state.photos.length === 0) {
+    elements.emptyState.classList.remove("is-hidden");
+    return;
+  }
+
+  elements.emptyState.classList.add("is-hidden");
+  const cards = state.photos.map((photo, index) => {
+    const article = document.createElement("article");
+    article.className = "candidate-card";
+    article.innerHTML = `
+      <button type="button" aria-label="후보 ${index + 1}을 ${state.category.title}에 적용" aria-pressed="false">
+        <span class="candidate-image"><img src="${photo.url}" alt="후보 ${index + 1}" loading="lazy" decoding="async" /></span>
+        <span class="candidate-info"><strong>후보 ${index + 1}</strong></span>
+      </button>`;
+    article.querySelector("button").addEventListener("click", () => selectPhoto(index));
+    return article;
+  });
+  elements.gallery.replaceChildren(...cards);
+  selectPhoto(0);
+}
+
+function activateFromHash() {
+  const id = location.hash.slice(1);
+  setCategory(categories.find((category) => category.id === id) || categories[0]);
+}
+
+window.addEventListener("hashchange", activateFromHash);
+renderNavigation();
+activateFromHash();
