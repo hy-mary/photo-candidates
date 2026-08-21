@@ -67,7 +67,7 @@ function selectPhoto(index) {
   elements.previewImage.alt = `${state.category.title}에 적용한 후보 ${index + 1}`;
   elements.previewImage.classList.add("is-visible");
   elements.previewPlaceholder.classList.add("is-hidden");
-  elements.selectedLabel.textContent = `후보 ${index + 1} · ${photo.name}`;
+  elements.selectedLabel.textContent = `후보 ${index + 1}`;
   document.querySelectorAll(".candidate-card").forEach((card, cardIndex) => {
     const selected = cardIndex === index;
     card.classList.toggle("is-selected", selected);
@@ -137,7 +137,7 @@ function renderGallery() {
     article.innerHTML = `
       <button type="button" aria-label="후보 ${index + 1}을 ${state.category.title}에 적용" aria-pressed="false">
         <span class="candidate-image"><img src="${photo.url}" alt="후보 ${index + 1}" loading="lazy" decoding="async" /></span>
-        <span class="candidate-info"><strong>${index + 1}</strong><span>${photo.name}</span></span>
+        <span class="candidate-info"><strong>후보 ${index + 1}</strong></span>
       </button>`;
     article.querySelector("button").addEventListener("click", () => selectPhoto(index));
     return article;
