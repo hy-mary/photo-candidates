@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="description" content="제작물별 사진 적용 예시를 확인하는 갤러리" />
+    <title>사진 적용 예시</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <header class="top-menu">
+      <nav class="category-list" id="category-list" aria-label="제작물 종류"></nav>
+    </header>
+
+    <main>
+      <section class="preview-section" aria-labelledby="category-title">
+        <div class="section-heading">
+          <div>
+            <h1 id="category-title">상단 현수막</h1>
+            <p id="category-spec">2670 × 445 mm</p>
+          </div>
+          <p class="selected-label" id="selected-label">아래에서 사진을 선택해주세요</p>
+        </div>
+
+        <div class="mockup-scene" id="mockup-scene" data-type="wide-banner">
+          <div class="mockup-object" id="mockup-object">
+            <span class="fixture fixture-a" aria-hidden="true"></span>
+            <span class="fixture fixture-b" aria-hidden="true"></span>
+            <img id="preview-image" alt="" />
+            <div class="preview-placeholder" id="preview-placeholder">
+              <span>아래 후보 사진을 선택해주세요</span>
+            </div>
+          </div>
+          <div class="mockup-stand" aria-hidden="true"></div>
+        </div>
+      </section>
+
+      <section class="candidates-section" aria-labelledby="candidates-title">
+        <div class="candidates-heading">
+          <h2 id="candidates-title">후보 사진</h2>
+          <span id="photo-count">0장</span>
+        </div>
+
+        <div class="gallery-status" id="gallery-status" role="status" aria-live="polite">사진 목록을 확인하고 있습니다.</div>
+        <div class="gallery" id="gallery"></div>
+
+        <div class="empty-state is-hidden" id="empty-state">
+          <p>이 메뉴에 등록된 사진이 아직 없습니다.</p>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
