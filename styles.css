@@ -163,10 +163,9 @@ main { width: min(1120px, calc(100% - 40px)); margin: 0 auto; padding: 44px 0 90
 .candidate-card.is-selected button { border-color: var(--blue); box-shadow: 0 0 0 2px rgba(40, 100, 220, .13); }
 .candidate-image { display: block; width: 100%; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 5px; background: var(--soft); }
 .candidate-image img { width: 100%; height: 100%; object-fit: cover; }
-.candidate-info { min-width: 0; padding: 10px 4px 3px; display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 9px; }
-.candidate-info strong { width: 25px; height: 25px; border-radius: 50%; background: var(--ink); color: white; display: grid; place-items: center; font-size: 12px; }
+.candidate-info { min-width: 0; padding: 10px 4px 3px; display: flex; align-items: center; }
+.candidate-info strong { min-height: 30px; padding: 0 12px; border-radius: 6px; background: var(--ink); color: white; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; line-height: 1; }
 .candidate-card.is-selected .candidate-info strong { background: var(--blue); }
-.candidate-info span { overflow: hidden; color: var(--muted); font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
 .empty-state { margin-top: 20px; border: 1px dashed #cfd3d8; border-radius: 9px; padding: 50px 24px; color: var(--muted); font-size: 13px; text-align: center; }
 .empty-state p { margin: 0; }
 
