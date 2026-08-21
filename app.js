@@ -1,6 +1,5 @@
-const REPOSITORY = "hy-mary/photo-candidates";
-const BRANCH = "main";
 const IMAGE_EXTENSIONS = /\.(avif|gif|jpe?g|png|webp)$/i;
+const PHOTO_FILES = Array.isArray(window.PHOTO_FILES) ? window.PHOTO_FILES : [];
 
 const categories = [
   { id: "01-top-banner", title: "상단 현수막", spec: "2670 × 445 mm", folder: "01-top-banner", mockup: "wide-banner" },
@@ -25,7 +24,7 @@ const elements = {
   emptyState: document.querySelector("#empty-state"),
 };
 
-const state = { category: categories[0], photos: [], selectedIndex: -1, requestId: 0 };
+const state = { category: categories[0], photos: [], selectedIndex: -1 };
 
 function naturalSort(a, b) {
   return a.name.localeCompare(b.name, "ko", { numeric: true, sensitivity: "base" });
@@ -95,62 +94,7 @@ function setLoading() {
   elements.photoCount.textContent = "0장";
 }
 
-async function loadPhotos(category) {
-  const requestId = ++state.requestId;
+function loadPhotos(category) {
   setLoading();
-  const endpoint = `https://api.github.com/repos/${REPOSITORY}/contents/${category.folder}?ref=${BRANCH}`;
-  try {
-    const response = await fetch(endpoint, { cache: "no-store", headers: { Accept: "application/vnd.github+json" } });
-    if (!response.ok) throw new Error(`GitHub 응답 ${response.status}`);
-    const items = await response.json();
-    if (requestId !== state.requestId) return;
-    state.photos = items
-      .filter((item) => item.type === "file" && IMAGE_EXTENSIONS.test(item.name))
-      .sort(naturalSort)
-      .map((item) => ({ name: item.name, url: item.download_url }));
-    renderGallery();
-  } catch (error) {
-    if (requestId !== state.requestId) return;
-    state.photos = [];
-    elements.gallery.replaceChildren();
-    elements.galleryStatus.className = "gallery-status is-error";
-    elements.galleryStatus.textContent = "사진 폴더를 불러오지 못했습니다.";
-    elements.emptyState.classList.remove("is-hidden");
-    console.error(error);
-  }
-}
-
-function renderGallery() {
-  elements.gallery.replaceChildren();
-  elements.photoCount.textContent = `${state.photos.length}장`;
-  elements.galleryStatus.className = "gallery-status is-hidden";
-
-  if (state.photos.length === 0) {
-    elements.emptyState.classList.remove("is-hidden");
-    return;
-  }
-
-  elements.emptyState.classList.add("is-hidden");
-  const cards = state.photos.map((photo, index) => {
-    const article = document.createElement("article");
-    article.className = "candidate-card";
-    article.innerHTML = `
-      <button type="button" aria-label="후보 ${index + 1}을 ${state.category.title}에 적용" aria-pressed="false">
-        <span class="candidate-image"><img src="${photo.url}" alt="후보 ${index + 1}" loading="lazy" decoding="async" /></span>
-        <span class="candidate-info"><strong>후보 ${index + 1}</strong></span>
-      </button>`;
-    article.querySelector("button").addEventListener("click", () => selectPhoto(index));
-    return article;
-  });
-  elements.gallery.replaceChildren(...cards);
-  selectPhoto(0);
-}
-
-function activateFromHash() {
-  const id = location.hash.slice(1);
-  setCategory(categories.find((category) => category.id === id) || categories[0]);
-}
-
-window.addEventListener("hashchange", activateFromHash);
-renderNavigation();
-activateFromHash();
+  const folderSegment = `/${category.folder}/`;
+  state.photos = PHOTO_FILES
